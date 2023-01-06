@@ -11,7 +11,7 @@ mongoose.connect('mongodb+srv://almanac:080356almanac@cluster0.m7wffkp.mongodb.n
 const app = express();
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
-        cb(null, 'uploads');
+        cb(null, 'public');
     }, filename: (_, file, cb) => {
         cb(null, file.originalname)
     }
@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 app.use(express.json())
 app.use(cors())
-app.use('/upload', express.static('uploads'))
+app.use('/upload', express.static('public'))
 
 
 app.post('/api/login', loginValidation,handleValidationErrors,UserController.login )
@@ -27,7 +27,7 @@ app.post('/api/register',registerValidation,handleValidationErrors,  UserControl
 app.get('/api/me', checkAuth, UserController.getMe)
 app.post('/upload',checkAuth, upload.single('image'), (req, res) => {
     res.json({
-        url:`/uploads/${req.file.originalname}`
+        url:`/public/${req.file.originalname}`
     })
 })
 
