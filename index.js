@@ -19,7 +19,9 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 app.use(express.json())
 app.use(cors())
-app.use('/uploads',express.static('uploads'))
+app.use('/uploads',
+    express.static(path.join(__dirname + '/uploads')));
+    // express.static('uploads'))
 
 
 app.post('/api/login', loginValidation,handleValidationErrors,UserController.login )

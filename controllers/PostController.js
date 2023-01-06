@@ -83,6 +83,7 @@ export const create = async (req, res) => {
             tags: req.body.tags.split(','),
             user: req.userId,
         });
+        console.log('image url new: '+ imageUrl)
         const post = await doc.save()
         res.json(post)
      } catch (err) {
@@ -105,6 +106,7 @@ export const update = async (req, res) => {
                 tags: req.body.tags.split(','),
                 user: req.userId,
             });
+        console.log('image  update: ' + imageUrl);
         res.json({
             success:true
         })
