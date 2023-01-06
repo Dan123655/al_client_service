@@ -27,7 +27,7 @@ app.post('/api/register',registerValidation,handleValidationErrors,  UserControl
 app.get('/api/me', checkAuth, UserController.getMe)
 app.post('/upload',checkAuth, upload.single('image'), (req, res) => {
     res.json({
-        url:`/tmp/${req.file.originalname}`
+        url:`/uploads/${req.file.originalname}`
     })
 })
 
