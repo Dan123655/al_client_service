@@ -2,9 +2,14 @@ import express from 'express'
 import multer from 'multer'
 import cors from 'cors'
 import mongoose from 'mongoose'
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { registerValidation,loginValidation, postCreateValidation } from './validations.js'
 import { UserController, PostController } from './controllers/index.js' 
 import { checkAuth, handleValidationErrors } from './utils/index.js'
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 mongoose.connect('mongodb+srv://almanac:080356almanac@cluster0.m7wffkp.mongodb.net/almanac?retryWrites=true&w=majority')
     .then(() => console.log('db ok'))
 .catch((err)=>console.log('db ewrror', err))
