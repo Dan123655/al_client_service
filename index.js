@@ -2,21 +2,18 @@ import express from 'express'
 import multer from 'multer'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import path from 'path';
 import { fileURLToPath } from 'url';
 import { registerValidation,loginValidation, postCreateValidation } from './validations.js'
 import { UserController, PostController } from './controllers/index.js' 
 import { checkAuth, handleValidationErrors } from './utils/index.js'
-const __filename = fileURLToPath(import.meta.url);
 
-const __dirname = path.dirname(__filename);
 mongoose.connect('mongodb+srv://almanac:080356almanac@cluster0.m7wffkp.mongodb.net/almanac?retryWrites=true&w=majority')
     .then(() => console.log('db ok'))
 .catch((err)=>console.log('db ewrror', err))
 const app = express();
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
-        cb(null, 'public');
+        cb(null, 'uploads');
     }, filename: (_, file, cb) => {
         cb(null, file.originalname)
     }
@@ -24,7 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 app.use(express.json())
 app.use(cors())
-app.use('/upload', express.static(path.join(__dirname + '/public')));
+app.use('/uploads', express.static('uploads'));
 
 
 app.post('/api/login', loginValidation,handleValidationErrors,UserController.login )
@@ -32,7 +29,7 @@ app.post('/api/register',registerValidation,handleValidationErrors,  UserControl
 app.get('/api/me', checkAuth, UserController.getMe)
 app.post('/upload',checkAuth, upload.single('image'), (req, res) => {
     res.json({
-        url:`/public/${req.file.originalname}`
+        url:`/uploads/${req.file.originalname}`
     })
 })
 
