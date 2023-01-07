@@ -2,11 +2,9 @@ import express from 'express'
 import multer from 'multer'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import { fileURLToPath } from 'url';
 import { registerValidation,loginValidation, postCreateValidation } from './validations.js'
 import { UserController, PostController } from './controllers/index.js' 
 import { checkAuth, handleValidationErrors } from './utils/index.js'
-
 mongoose.connect('mongodb+srv://almanac:080356almanac@cluster0.m7wffkp.mongodb.net/almanac?retryWrites=true&w=majority')
     .then(() => console.log('db ok'))
 .catch((err)=>console.log('db ewrror', err))
@@ -21,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 app.use(express.json())
 app.use(cors())
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads',cors(), express.static('uploads'))
 
 
 app.post('/api/login', loginValidation,handleValidationErrors,UserController.login )
@@ -46,4 +44,4 @@ app.listen(3500, (err) => {
         return console.log(err)
     }
     console.log('serv started')
-}) 
+})
