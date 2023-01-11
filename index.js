@@ -5,7 +5,8 @@ import mongoose from 'mongoose'
 import { registerValidation,loginValidation, postCreateValidation } from './validations.js'
 import { UserController, PostController } from './controllers/index.js' 
 import { checkAuth, handleValidationErrors } from './utils/index.js'
-mongoose.connect('mongodb+srv://almanac:080356almanac@cluster0.m7wffkp.mongodb.net/almanac?retryWrites=true&w=majority')
+import { myKey } from './key.js'
+mongoose.connect(`${myKey}`)
     .then(() => console.log('db ok'))
 .catch((err)=>console.log('db ewrror', err))
 const app = express();
@@ -36,9 +37,6 @@ app.get('/posts/:id',  PostController.getOne)
 app.post('/posts',checkAuth, postCreateValidation,  PostController.create)
 app.delete('/posts/:id',checkAuth, PostController.remove)
 app.patch('/posts/:id', checkAuth, PostController.update)
-app.get('/posts/tags',PostController.getLastTags)
-app.get('/tags',PostController.getLastTags)
-
 app.listen(3500, (err) => {
     if (err) {
         return console.log(err)

@@ -80,10 +80,8 @@ export const create = async (req, res) => {
             title: req.body.title,
             text: req.body.text,
             imageUrl: req.body.imageUrl,
-            tags: req.body.tags.split(','),
             user: req.userId,
         });
-        console.log('image url new: '+ imageUrl)
         const post = await doc.save()
         res.json(post)
      } catch (err) {
@@ -103,10 +101,8 @@ export const update = async (req, res) => {
                 title: req.body.title,
                 text: req.body.text,
                 imageUrl: req.body.imageUrl,
-                tags: req.body.tags.split(','),
                 user: req.userId,
             });
-        console.log('image  update: ' + imageUrl);
         res.json({
             success:true
         })
@@ -114,22 +110,6 @@ export const update = async (req, res) => {
         console.log(err);
         res.status(500).json({
             message:"Cannot create article"
-        })
-    }
-}
-export const getLastTags = async (req, res) => {
-    try {
-        const posts = await PostModel.find().limit(5).exec();
-        const tags = posts
-            .map((obj) => obj.tags)
-            .flat()
-            .slice(0, 5);
-        
-        res.json(tags)
-     } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            message:"Cannot retrieve tags"
         })
     }
 }
